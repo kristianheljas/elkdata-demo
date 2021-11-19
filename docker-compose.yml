@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ROOT_PASSWORD: ''
+      MYSQL_ALLOW_EMPTY_PASSWORD: '1'
+    volumes:
+      - '/run/mysqld:/run/mysqld'
+    ports:
+      - '3306:3306'
