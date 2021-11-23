@@ -9,6 +9,12 @@ log = logging.getLogger(__name__)
 
 
 def run_shell_command(command_with_args: t.Sequence[str]) -> t.Tuple[int, str, str]:
+    """
+    Run shell command locally
+
+    :param command_with_args:
+    :return:
+    """
     log.info('Executing shell command %s', ' '.join(command_with_args))
 
     with Popen(command_with_args, stdout=PIPE, stderr=PIPE) as process:
@@ -23,7 +29,14 @@ def run_shell_command(command_with_args: t.Sequence[str]) -> t.Tuple[int, str, s
     return exit_code, stdout.decode("utf-8"), stderr.decode("utf-8")
 
 
-def build_optimization_cmd(dry_run: bool = False, filters: t.List[str] = []):
+def build_optimization_cmd(dry_run: bool = False, filters: t.List[str] = []) -> t.List[str]:
+    """
+    Generates optixmization command to be run on remote server
+
+    :param dry_run:
+    :param filters:
+    :return:
+    """
     optimization_cmd = ['/bin/bash', remote_optimize_script_path]
 
     if dry_run:
@@ -39,7 +52,10 @@ def parse_optimizatation_output(output: str) -> t.Tuple[int, int, int]:
     """
     Parse output from optimization script
 
-    returns a tuple of success_counter, fail_counter, elapsed_ms
+    returns 3 integers:
+    - success_counter (How many tables were optimized)
+    - fail_counter (How many tables failed)
+    - elapsed_ms (Time it took to optimize in milliseconds)
     """
     success_counter = 0
     fail_counter = 0

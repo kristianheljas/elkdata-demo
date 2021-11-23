@@ -45,6 +45,7 @@ if __name__ == '__main__':
             print_warn('Transferring optimization script failed, skipping server')
             continue
 
+        # region Run optimizer
         optimization_cmd = build_optimization_cmd(dry_run, filters)
         exit_code, stdout, stderr = server.runCommand(optimization_cmd)
         if exit_code != 0:
@@ -55,6 +56,7 @@ if __name__ == '__main__':
 
         success_counter, fail_counter, database_elapsed_ms = parse_optimizatation_output(stdout)
         total_elapsed_ms += database_elapsed_ms
+        # endregion
 
         print_info(
             '{}/{} tables optimized in "{}", took {:.3f} seconds',
@@ -64,10 +66,12 @@ if __name__ == '__main__':
             database_elapsed_ms / 1000
         )
 
+        # region Remove optimization script
         exit_code, stdout, stderr = server.runCommand(['/usr/bin/rm', remote_optimize_script_path])
         if exit_code != 0:
             print_warn('Failed to remove optimization script from remote server')
             if stderr:
                 print_warn('Message from server: {}', stderr)
+        # endregion
 
     print_info('\nDONE! All optimizations completed in {:.3f} seconds', total_elapsed_ms / 1000)

@@ -40,5 +40,4 @@ Processing server "mysql-2.localhost"
 2/2 tables optimized in "mysql-2.localhost", took 0.595 seconds
 
 DONE! All optimizations completed in 1.326 seconds
-
 ```
